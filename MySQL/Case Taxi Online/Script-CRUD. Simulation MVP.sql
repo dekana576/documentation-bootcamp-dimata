@@ -162,18 +162,21 @@ use taxi_online;
 		select
 			o.order_id,
 			o.order_date,
+			t.payment_method as 'Payment Method',
+			t.payment_status as 'Payment Status',
 			u.name as 'Client',
 			us.name as 'Driver',
 			c.car_name as 'Car',
 			r.rating
 		from ratings as r
 		join orders as o on (o.order_id = r.order_id)
+		join transactions as t on (t.order_id = o.order_id)
 		join users as u on (r.client_id = u.user_id)
 		join users as us on (r.driver_id = us.user_id)
 		join cars as c on (c.car_id = us.car_id);
 
 	commit;
-	
+
 
 	
 -- CRUD Simulation MVP (Client) end
