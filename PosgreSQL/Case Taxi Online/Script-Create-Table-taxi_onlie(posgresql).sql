@@ -43,19 +43,21 @@ select * from pg_tables where schemaname= 'public';
 	
 --create table cars
 	
+	create type users_gender as enum ('Male', 'Female');
+	
+	create type users_role as enum ('Admin', 'Client', 'Driver');
+	
 	create table users(
 		user_id serial primary key,
 		name varchar(75) not null,
-		gender varchar(6) not null,
+		gender users_gender not null,
 		address varchar(100) not null,
 		phone_number varchar(20) not null unique,
 		email varchar(50) not null unique,
 		password varchar(50) not null,
 		confirm_password varchar(50) not null,
-		role varchar(6) not null,
+		role users_role not null,
 		car_id int unique,
-		constraint chk_gender check (gender in('Male', 'Female')),
-		constraint chk_role check (role in('Admin', 'Client', 'Driver')),
 		constraint fk_users_cars
 			foreign key (car_id) references cars(car_id)
 			on update cascade
@@ -78,6 +80,8 @@ select * from pg_tables where schemaname= 'public';
 
 --create table orders
 	
+	create type orders_status as enum ('Accepted', 'Canceled', 'Searching', 'Completed');
+	
 	create table orders(
 		order_id serial primary key,
 		order_date timestamp default current_timestamp,
@@ -85,13 +89,11 @@ select * from pg_tables where schemaname= 'public';
 		pickup_loc varchar(200) not null,
 		destination_loc varchar(200) not null,
 		total_price int not null default 0,
-		status_order varchar(10) not null,
+		status_order orders_status not null,
 		client_id int not null,
 		driver_id int,
 		constraint chk_passangers check(passangers between 1 and 4),
 		constraint chk_total_price check(total_price >= 0),
-		constraint chk_status_order
-			check(status_order in ('Accepted', 'Canceled', 'Searching', 'Completed')),
 		constraint fk_orders_client
 			foreign key(client_id) references users(user_id)
 			on update cascade,
@@ -103,16 +105,16 @@ select * from pg_tables where schemaname= 'public';
 
 --create table transactions
 	
+	create type transactions_payment_method as enum ('Cash', 'Bank', 'E-Wallet');
+	
+	create type transactions_payment_status as enum ('Success', 'Pending', 'Failed');
+	
 	create table transactions(
 		transaction_id serial primary key,
-		payment_method varchar(10) not null,
+		payment_method transactions_payment_method not null,
 		amount int not null,
-		payment_status varchar(7) not null,
+		payment_status transactions_payment_status not null,
 		order_id int not null unique,
-		constraint chk_payment_method
-			check(payment_method in ('Cash', 'Bank', 'E-Wallet')),
-		constraint chk_payment_status
-			check(payment_status in ('Success', 'Pending', 'Failed')),
 		constraint chk_amount check(amount >= 0),
 		constraint fk_transactions_orders
 			foreign key(order_id) references orders(order_id)
@@ -140,3 +142,5 @@ select * from pg_tables where schemaname= 'public';
 			foreign key(driver_id) references users(user_id)
 			on update cascade	
 	);
+	
+
