@@ -1,3 +1,5 @@
+-- psql --username=postgres (to open postgres)
+
 create database belajar_postgresql;
 
 --\c to use database
