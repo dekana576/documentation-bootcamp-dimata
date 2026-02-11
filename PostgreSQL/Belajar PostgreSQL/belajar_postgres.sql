@@ -127,6 +127,55 @@ create table customer(
 
 select cfgname from pg_ts_config;
 
+--CREATE FULL TEXT SEARCH
+
 create index product_description_search on products using gin (to_tsvector('indonesian', description));
 
 select * from products where description @@ to_tsquery('mie');
+
+
+--SCHEME
+
+select current_schema();
+
+create schema contoh;
+
+drop schema contoh;
+
+set search_path to contoh;
+
+show search_path; 
+
+set search_path to public;
+
+select * from public.products;
+
+
+
+-- MANAGE USER
+
+
+--psql --host=localhost --port=5432 --dbname=belajar_postgresql --username=dekana
+
+create role dekana;
+
+create role budi;
+
+drop role budi;
+
+alter role dekana login password 'dekana';
+
+grant select on all tables in schema public to dekana;
+
+
+--BACKUP DATABASE
+
+--pg_dump --host=localhost --port=5432 --dbname=taxi_online --username=postgres --format=plain --file=taxi_online_postgresql.sql
+
+
+--RESTORE DATABASE
+
+create database belajar_postgresql_restore;
+
+
+--psql --host=localhost --port=5432 --dbname=belajar_postgresql_restore --username=postgres --file=taxi_online_postgresql.sql
