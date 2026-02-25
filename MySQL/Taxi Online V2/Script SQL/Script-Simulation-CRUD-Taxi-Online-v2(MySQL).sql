@@ -14,7 +14,7 @@ use taxi_online_v2;
 			-- read
 			select * from types;
 			
-			-- update
+			-- update	
 			update types
 			set type_name = 'Sedan'
 			where type_id = '3';
@@ -278,6 +278,8 @@ use taxi_online_v2;
 	
 	-- Create Promotion
 	
+	
+	
 	start transaction;
 	
 		insert into promotions (promo_name, promo_code, disc_type, disc_value, start_date, expired_date, quota)
@@ -313,6 +315,8 @@ use taxi_online_v2;
 -- Users Client (Order Taxi with Promo) [start]
 
 	start transaction;
+	
+	desc orders;
 	
 		insert into location (pickup_loc, destination_loc, pick_latitude, pick_longitude, dest_latitude, dest_longitude)
 		values ('Living World - Denpasar', 'Padang Sambian', -8.635022683110943, 115.2318559247654, -8.667466460618998, 115.18752239184778);
@@ -375,5 +379,6 @@ use taxi_online_v2;
 		join promotions as p on (o.promotion_id=p.promotion_id)
 		where o.order_id = '25ddea97-07f2-11f1-b654-4c50dd2fb965';
 	commit;
-	
+		
+		
 -- Users Client (Order Taxi with Promo) [end]??
