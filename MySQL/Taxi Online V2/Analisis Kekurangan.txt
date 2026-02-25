@@ -1,0 +1,10 @@
+1. table driver_location
+2. kurang status order
+3. kurang kolom time dan distance di order
+4. tambahkan kolom color pada cars
+5. tambahkan kolom image pada cars dan users
+6. tambahkan kolom ktp_img dan sim_img ke driver_document
+
+postman:
+1. driver input cars
+2. driver input driver_document
